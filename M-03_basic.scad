@@ -29,7 +29,21 @@ difference()
      tan of this times 6.5 gives the ammount ro make r1
      larger than r2 to maitain 1.5mm of rim. */
     cylinder(h = 6.5,
-             r1 = 16 + ( tan( atan( 1 / 4 ) ) * 6.5 ),
+             r1 = 16 + (tan(atan( 1 / 4 )) * 6.5),
              r2 = 16,
              $fn = ren_det);
+  //The front chamfer
+  translate([0,0,19.5 - offset])
+    cylinder(h = 6.5,
+             r1 = 16,
+             r2 = 16 + (tan(atan( 1 / 4 )) * 6.5),
+             $fn = ren_det);
 }
+//The lip on the front of the rim
+  difference()
+  {
+    translate([0,0,25 - offset])
+      cylinder(h = 0.25, r = 21, $fn = ren_det);
+    translate([0,0,24 - offset])
+      cylinder(h = 2, r = 20, $fn = ren_det);
+  }
