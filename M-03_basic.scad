@@ -36,6 +36,15 @@ difference()
   //cut for the tool whoose diameter needs 5.5mm
   translate([0,0,5])
     cylinder(r = 5.5, h = 25, $fn = ren_det);
+  /* Use a series of cones to bevel the "tool hole", this is the first
+   feature of the face that needs to obey offset. It's upper limit is
+   the difference between the face's big shpere's radius and z
+   position. */
+  for(i = [0 : 50 / ren_det : 5])
+  {
+    translate([0,0,0 - sqrt(pow(face_radius,2) - pow(21,2)) + face_radius - offset + 7.5 + i])
+      cylinder(r1 = 5.5, r2 = 5.5 + i, h = 5 - i, $fn = ren_det / 2);
+  }
 }
 
 
