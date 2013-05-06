@@ -3,11 +3,40 @@ include <MCAD/shapes.scad>
 //Settings
 offset = -1.5;
 ren_det = 100;
+face_radius = 180;
 
 
-wheel_rim(lip = true);
-hub(nut_guide = true);
+wheel_rim(lip = false);
+hub(nut_guide = false);
 
+
+/* Punch the middle out of the part we'll cut the spokes into with
+ this difference. */
+difference()
+{
+  union()
+  {
+    /* make a face with a radius that we can cut spokes into later. 
+     The amount to pull the big sphere down is the root of; the square
+     of the radius of the shpere minus the square of the radius of the
+     cylinder. See chords. */
+    intersection()
+    {
+      translate([0,0,12 - offset])
+        cylinder(r = 21, h = 5, $fn = ren_det);
+      translate([0,0,12.5 - sqrt(pow(face_radius,2) - pow(21,2)) - offset])
+        sphere(r = face_radius, $fn = ren_det * 4);
+    }
+    //the lower portion of the face
+    cylinder(r = 18, h = 12.5 - offset, $fn = ren_det);
+  }
+  //clear the hex
+  translate([0,0,-1])
+    cylinder(r = 9.25, h = 7.5, $fn = ren_det);
+  //cut for the tool whoose diameter needs 5.5mm
+  translate([0,0,5])
+    cylinder(r = 5.5, h = 25, $fn = ren_det);
+}
 
 
 /////////////////////////////////////////////////////
@@ -75,11 +104,13 @@ module wheel_rim(lip = true)
 //The hub is the centre including the hex drive
 module hub(nut_guide = true)
 {
+  //lower half with hex
   difference()
   {
     cylinder(r = 9.25, h = 6, $fn = ren_det / 2);
     hexagon(height = 13, size = 12.8);
   }
+  //upper half with bore
   difference()
   {
     translate([0,0,6])
