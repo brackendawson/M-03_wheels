@@ -6,7 +6,7 @@ ren_det = 100;
 face_radius = 180;
 
 
-wheel_rim(lip = false);
+wheel_rim(lip = true);
 hub(nut_guide = false);
 
 
@@ -44,6 +44,16 @@ difference()
   {
     translate([0,0,0 - sqrt(pow(face_radius,2) - pow(21,2)) + face_radius - offset + 7.5 + i])
       cylinder(r1 = 5.5, r2 = 5.5 + i, h = 5 - i, $fn = ren_det / 2);
+  }
+  //cut the 16 spokes
+  for (i = [0 : 15])
+  {
+    rotate([0,0,i * 360 / 16])
+      linear_extrude(file = "ozrallyspokehole.dxf",
+                     layer = "SpokeHole",
+                     height = 50,
+                     center = true,
+                     convexity = 10);
   }
 }
 
