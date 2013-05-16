@@ -32,7 +32,7 @@ difference()
   }
   //clear the hex
   translate([0,0,-1])
-    cylinder(r = 9.25, h = 7.5, $fn = ren_det);
+    cylinder(r = 9.15, h = 7.5, $fn = ren_det);
   //cut for the tool whoose diameter needs 5.5mm
   translate([0,0,5])
     cylinder(r = 5.5, h = 25, $fn = ren_det);
